@@ -59,6 +59,7 @@ Add additional notes about how to deploy this on a live system
 * [Node](https://nodejs.org/en/) - Runtime Environment
 * [NPM](https://www.npmjs.com/) - Package Manager
 * [React](https://reactjs.org/) - User Interface Library
+* [Travis](https://travis-ci.org/) - Continuous Integration
 
 ## Contributing
 
