@@ -20,7 +20,7 @@
 
 ### Versions
 
-Please include the version of Transact you are using, which OS you are running, and its version.
+Please include the version of Web-Crawler you are using, which OS you are running, and its version.
 
 ### Additional Information
 
