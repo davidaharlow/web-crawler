@@ -17,7 +17,7 @@ We must be able to understand the design of your change from this description. I
 
 ### Why Should This Be In Core?
 
-<!-- Explain why this functionality should be in atom/atom as opposed to a package -->
+<!-- Explain why this functionality should be in web-crawler as opposed to a package -->
 
 ### Benefits
 
