@@ -1,4 +1,5 @@
 # web-crawler
+[![Build Status](https://travis-ci.org/brycessorensen/web-crawler.svg?branch=master)](https://travis-ci.org/brycessorensen/web-crawler)
 Extract and index relevant information from a specified website
 
 ## Getting Started
