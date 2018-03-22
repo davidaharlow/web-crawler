@@ -7,28 +7,36 @@ export default class Search extends Component {
     this.state = {
       value: '',
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChange(e) {
+  handleChange(e) {
     this.setState({ value: e.target.value });
   }
 
-  onClick() {
+  handleSubmit(e) {
+    e.preventDefault();
     console.log('I should scrape the information!', this.state.value);
+
+
+    this.setState({ value: '' });
   }
 
   render() {
+    let { value } = this.state;
     return (
-      <form className="Search">
+      <form className="Search" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Search"
-          onChange={e => this.onChange(e)}
+          value={value}
+          onChange={this.handleChange}
         />
         <input
-          type="button"
+          type="submit"
           value="Go"
-          onClick={() => this.onClick()}
         />
       </form>
     );
