@@ -1,4 +1,6 @@
 # web-crawler
+[![Build Status](https://travis-ci.org/brycessorensen/web-crawler.svg?branch=master)](https://travis-ci.org/brycessorensen/web-crawler)
+
 Extract and index relevant information from a specified website
 
 ## Getting Started
@@ -57,6 +59,7 @@ Add additional notes about how to deploy this on a live system
 * [Node](https://nodejs.org/en/) - Runtime Environment
 * [NPM](https://www.npmjs.com/) - Package Manager
 * [React](https://reactjs.org/) - User Interface Library
+* [Travis](https://travis-ci.org/) - Continuous Integration
 
 ## Contributing
 
