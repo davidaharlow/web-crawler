@@ -1,68 +1,49 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
-const queue = [];
+const scrape = (stream, elements) => {
+  console.log(elements);
+  elements.forEach((element) => {
+    let movie = {
+      title: element.childNodes[1].innerText,
+      description: element.childNodes[7].innerText,
+      director: element.childNodes[9].children[0].text,
+    };
+    stream.write('hey', 'utf-8', err => console.log(err));
+  });
+};
 
 const navigate = async (url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced') => {
+  const stream = fs.createWriteStream('movies.txt', 'utf-8', { flags: 'a' });
   const browser = await puppeteer.launch({
     headless: false,
-    slowMo: 500,
+    slowMo: 5,
   });
   const page = await browser.newPage();
   await page.goto(url);
 
-  // const results = await page.$$('.lister-item-header');
-  while (page.$$('.lister-page-next')) {
-    const [response] = await Promise.all([
-      page.waitForNavigation(),
-      page.click('.lister-page-next'),
-    ]);
+  while (page.$('.lister-page-next')) {
+    let results = await page.$$('lister-item-content');
+    scrape(stream, results);
+    try {
+      await Promise.all([
+        page.waitForNavigation(),
+        page.click('.lister-page-next'),
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  // const [response] = await Promise.all([
-  //   page.waitForNavigation({ waitUntil: 'networkIdle0' }),
-  //   page.click('.lister-page-next'),
-  // ]);
 
-  // if (queue.length === 0) {
-  //   browser.close();
-  // }
-  await browser.close();
+  browser.close();
+  stream.end();
+  stream.on('finish', () => {
+    console.error('Scrape Complete');
+  });
 };
 
 navigate();
 
-const scrape = async () => {
-  //   append information to data file
-  //   if queue is empty
-  //   close browser
-  //     else
-  // repeat
-};
-
 module.exports = {
   navigate,
 };
-
-/* 
-  Launch the browser with initial url
-  Click next selector
-    wait for navigation
-      Push url to queue
-
-  Repeat until no more next selectors
-
-  When URL aggregation is done
-    dequeue URL and invoke func
-    scrape website
-
-*/
-
-/* 
-  Launch the browser with initial url
-  Scrape website
-  Click next selector
-    wait for navigation
-    if next selector exists
-      repeat
-    else 
-      close browser
-*/
