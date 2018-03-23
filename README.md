@@ -60,6 +60,7 @@ Add additional notes about how to deploy this on a live system
 * [NPM](https://www.npmjs.com/) - Package Manager
 * [React](https://reactjs.org/) - User Interface Library
 * [Travis](https://travis-ci.org/) - Continuous Integration
+* [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
 
 ## Contributing
 
