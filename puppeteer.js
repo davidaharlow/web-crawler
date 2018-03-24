@@ -11,7 +11,7 @@ const scrape = (stream, movies) => {
   });
 };
 
-const navigate = async (url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced') => {
+const navigate = async (url) => {
   const stream = fs.createWriteStream('movies.txt', 'utf-8', { flags: 'a' });
   const browser = await puppeteer.launch({
     headless: false,
@@ -49,8 +49,6 @@ const navigate = async (url = 'https://www.imdb.com/search/title?groups=top_1000
   }
   stream.end();
 };
-
-navigate();
 
 module.exports = {
   navigate,
