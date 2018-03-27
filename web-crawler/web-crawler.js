@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { createWritable, writeToFile } = require('./web-crawler/library');
+const { createWritable, writeToFile } = require('./library');
 
 const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fileType, configuration }) => {
   console.log('scraping...');
