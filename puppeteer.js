@@ -1,55 +1,62 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs');
+const { createWritable, writeToFile } = require('./web-crawler/library');
 
-const scrape = (stream, movies) => {
-  movies.forEach((movie) => {
-    stream.write(`${movie}\n`, 'utf-8', (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
-};
-
-const navigate = async (url) => {
-  const stream = fs.createWriteStream('movies.txt', 'utf-8', { flags: 'a' });
-  const browser = await puppeteer.launch({
-    headless: false,
-  });
+const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fileType, configuration }) => {
+  console.log('scraping...');
+  const writable = createWritable(fileName, fileType);
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
+
   await page.goto(url);
 
-  while (page.$('.lister-page-next')) {
-    const results = await page.evaluate(() => {
-      let data = [];
-      let elements = document.querySelectorAll('.lister-item-content');
+  page.on('console', msg => console.log(msg.text()));
+
+  while (await page.$(nextSelector)) {
+    const pageResults = await page.evaluate((listSelector, configuration) => {
+      let scrapedContent = [];
+      let elements = document.querySelectorAll(listSelector);
+
       elements.forEach((element) => {
-        let movie = {
-          title: element.childNodes[1].innerText,
-          description: element.childNodes[7].innerText,
-          director: element.childNodes[9].children[0].text,
-        };
-        data.push(JSON.stringify(movie));
+        let item = {};
+        for (let desiredAttribute in configuration) {
+          let attributeSelector = configuration[desiredAttribute];
+          item[desiredAttribute] = element.querySelector(attributeSelector).innerText;
+        }
+        scrapedContent.push(JSON.stringify(item));
       });
-      return data;
-    });
-    try {
-      scrape(stream, results);
-      if (page.$('.lister-page-next')) {
-        await Promise.all([
-          page.waitForNavigation(),
-          page.click('.lister-page-next'),
-        ]);
-      }
-    } catch (error) {
-      console.log(error);
-      browser.close();
-      break;
-    }
+
+      return scrapedContent;
+    }, listSelector, configuration);
+
+    writeToFile(writable, pageResults);
+    await Promise.all([
+      page.waitForNavigation(),
+      page.click(nextSelector)
+    ]);
   }
-  stream.end();
+
+  const lastPageResults = await page.evaluate((listSelector, configuration) => {
+    let scrapedContent = [];
+    let elements = document.querySelectorAll(listSelector);
+
+    elements.forEach((element) => {
+      let item = {};
+      for (let desiredAttribute in configuration) {
+        let attributeSelector = configuration[desiredAttribute];
+        item[desiredAttribute] = element.querySelector(attributeSelector).innerText;
+      }
+      scrapedContent.push(JSON.stringify(item));
+    });
+
+    return scrapedContent;
+  }, listSelector, configuration);
+  writeToFile(writable, lastPageResults);
+
+  browser.close();
+  writable.end();
+  console.log('...scraping complete');
 };
 
 module.exports = {
-  navigate,
+  initializeScrape,
 };
