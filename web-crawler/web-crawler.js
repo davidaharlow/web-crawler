@@ -1,6 +1,7 @@
 /* eslint-disable */
 const puppeteer = require('puppeteer');
-const { createWritable, writeToFile } = require('./library');
+const { createWritable, writeToFile, deleteFile } = require('./library');
+const { uploadToElasticSearch } = require('../database/upload');
 
 const initializeScrape = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
   console.log('scraping...');
@@ -55,28 +56,11 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
 
   browser.close();
   writable.end();
-  console.log('...scraping complete');
+
+  console.log('Scraping complete. Loading into ElasticSearch');
+
+  uploadToElasticSearch(fileName);
 };
-
-/* 
-
-let params = {
-  url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced',
-  nextSelector: '.lister-page-next',
-  listSelector: '.lister-item-content',
-  fileName: 'imdb',
-  itemDescriptor: 'movie',
-  fileType: 'json',
-  configuration: {
-    title: 'div.lister-item-content > h3 > a',
-    description: 'div.lister-item-content > p:nth-child(4)',
-    director: 'div.lister-item-content > p:nth-child(5) > a:nth-child(1)',
-  }
-};
-
-initializeScrape(params);
-
- */
 
 module.exports = {
   initializeScrape,
