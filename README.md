@@ -23,7 +23,7 @@ You will have to create your own Amazon Elasticsearch Service endpoint or use th
 export ENDPOINT=https://search-domainname-domainid.us-west-1.es.amazonaws.com
 ```
 
-Ensure that you have set the environment variable correctly:
+Ensure that you have set the environment variable correctly (before you initialize the server):
 
 ```
 echo $ENDPOINT
@@ -33,34 +33,27 @@ The console should print out the URL you just entered.
 
 ### Running the IMDB Sample
 
-Run the code in your browser using the command: 
+Initalize your server:
+
+```
+node server/index.js
+```
+
+ElasticSearch Info should output that it is adding a connection to the Amazon ES Endpoint. If it is attempting to add to localhost, see the Basic Configuration notes above.
+
+Run the code in your browser using the following command: 
 
 ```
 npm start
-```
-
-Enter these parameters into the input fields:
-
-```
-  url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced'
-  nextSelector: '.lister-page-next'
-  listSelector: '.lister-item-content'
-  fileName: 'imdb'
-  itemDescriptor: 'movie'
-  fileType: 'json'
-
-  title: 'div.lister-item-content > h3 > a'
-  description: 'div.lister-item-content > p:nth-child(4)'
-  director: 'div.lister-item-content > p:nth-child(5) > a:nth-child(1)'
 ```
 
 Click the crawl button.
 
 The web-crawler will connect to Amazon's Elastic Search Service (ES), and index the information scraped from the Highest Rated IMDB "Top 1000" Titles list. The script will automatically create and upload the file to AWS. 
 
-All you need to do is search it:
+It should take less than a minute to scrape the data and upload it to Amazon. All you need to do is search it:
 
-Enter a query into the search bar.
+Enter a query into the search bar when it appears.
 
 ## Testing
 

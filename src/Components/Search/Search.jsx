@@ -18,9 +18,7 @@ export default class Search extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('I should scrape the information!', this.state.value);
-
-
+    this.props.handleSearch(this.state.value);
     this.setState({ value: '' });
   }
 
