@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Requirements
 
-The only requirement of this application is the Node Package Manager. All other dependencies (including the AWS SDK for Node.js) can be installed with:
+The only requirement of this application is the Node Package Manager. All other dependencies can be installed with:
 
 ```
 npm install
@@ -17,33 +17,50 @@ npm install
 
 ### Basic Configuration
 
-You need to set up your AWS security credentials before the sample code is able to connect to AWS. You can do this by creating a file named "credentials" at ~/.aws/ (C:\Users\USER_NAME.aws\ for Windows users) and saving the following lines in the file:
+You will have to create your own Amazon Elasticsearch Service endpoint or use the one provided to you. Your ENDPOINT environment variable must be set before the sample code is able to connect to AWS. You can do this by running this command in the terminal:
 
 ```
-[default]
-aws_access_key_id = <your access key id>
-aws_secret_access_key = <your secret key>
+export ENDPOINT=https://search-domainname-domainid.us-west-1.es.amazonaws.com
 ```
+
+Ensure that you have set the environment variable correctly:
+
+```
+echo $ENDPOINT
+```
+
+The console should print out the URL you just entered. 
 
 ### Running the IMDB Sample
 
-This sample web-crawler connects to Amazon's Elastic Search Service (ES), and indexes the information scraped from the Highest Rated IMDb "Top 1000" Titles list. The script will automatically create the file to upload. All you need to do is run it:
+Run the code in your browser using the command: 
 
 ```
-node web-crawler/web-crawler.js
+npm start
 ```
 
-Then, bulk upload the documents to an Amazon ES Domain by typing the command:
+Enter these parameters into the input fields:
 
 ```
-curl -XPOST elasticsearch_domain_endpoint/_bulk --data-binary @imdb.json -H 'Content-Type: application/json'
+  url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced'
+  nextSelector: '.lister-page-next'
+  listSelector: '.lister-item-content'
+  fileName: 'imdb'
+  itemDescriptor: 'movie'
+  fileType: 'json'
+
+  title: 'div.lister-item-content > h3 > a'
+  description: 'div.lister-item-content > p:nth-child(4)'
+  director: 'div.lister-item-content > p:nth-child(5) > a:nth-child(1)'
 ```
 
-Run the following command to search the IMDB domain for the word "spielberg"
+Click the crawl button.
 
-```
-curl -XGET 'elasticsearch_domain_endpoint/imdb/_search?q=spielberg'
-```
+The web-crawler will connect to Amazon's Elastic Search Service (ES), and index the information scraped from the Highest Rated IMDB "Top 1000" Titles list. The script will automatically create and upload the file to AWS. 
+
+All you need to do is search it:
+
+Enter a query into the search bar.
 
 ## Testing
 
