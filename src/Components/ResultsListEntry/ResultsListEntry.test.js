@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ResultsList from './ResultsListEntry';
+import ResultsListEntry from './ResultsListEntry';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<ResultsListEntry />, div);
+  const result = 'Test Result';
+  ReactDOM.render(<ResultsListEntry result={result} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
