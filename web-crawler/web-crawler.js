@@ -1,7 +1,8 @@
+/* eslint-disable */
 const puppeteer = require('puppeteer');
 const { createWritable, writeToFile } = require('./library');
 
-const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fileType, configuration }) => {
+const initializeScrape = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
   console.log('scraping...');
   const writable = createWritable(fileName, fileType);
   const browser = await puppeteer.launch();
@@ -28,7 +29,7 @@ const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fil
       return scrapedContent;
     }, listSelector, configuration);
 
-    writeToFile(writable, pageResults);
+    writeToFile(writable, pageResults, fileName, itemDescriptor);
     await Promise.all([
       page.waitForNavigation(),
       page.click(nextSelector)
@@ -50,12 +51,32 @@ const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fil
 
     return scrapedContent;
   }, listSelector, configuration);
-  writeToFile(writable, lastPageResults);
+  writeToFile(writable, lastPageResults, fileName, itemDescriptor);
 
   browser.close();
   writable.end();
   console.log('...scraping complete');
 };
+
+
+
+let params = {
+  url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced',
+  nextSelector: '.lister-page-next',
+  listSelector: '.lister-item-content',
+  fileName: 'imdb',
+  itemDescriptor: 'movie',
+  fileType: 'json',
+  configuration: {
+    title: 'div.lister-item-content > h3 > a',
+    description: 'div.lister-item-content > p:nth-child(4)',
+    director: 'div.lister-item-content > p:nth-child(5) > a:nth-child(1)',
+  }
+};
+
+initializeScrape(params);
+
+
 
 module.exports = {
   initializeScrape,
