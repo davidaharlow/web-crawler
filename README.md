@@ -33,7 +33,13 @@ The console should print out the URL you just entered.
 
 ### Running the IMDB Sample
 
-Run the code in your browser using the command: 
+Initalize your server:
+
+```
+node server/index.js
+```
+
+Run the code in your browser using the following command: 
 
 ```
 npm start
