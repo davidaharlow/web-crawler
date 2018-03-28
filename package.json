@@ -4,7 +4,9 @@
   "private": true,
   "proxy": "http://localhost:4000/",
   "dependencies": {
+    "aws-sdk": "^2.215.1",
     "body-parser": "^1.18.2",
+    "elasticsearch": "^14.2.1",
     "express": "^4.16.3",
     "puppeteer": "^1.2.0",
     "react": "^16.2.0",
