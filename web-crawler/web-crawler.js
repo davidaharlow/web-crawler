@@ -58,7 +58,7 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
   console.log('...scraping complete');
 };
 
-
+/* 
 
 let params = {
   url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced',
@@ -76,7 +76,7 @@ let params = {
 
 initializeScrape(params);
 
-
+ */
 
 module.exports = {
   initializeScrape,
