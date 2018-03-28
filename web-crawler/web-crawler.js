@@ -1,7 +1,9 @@
+/* eslint-disable */
 const puppeteer = require('puppeteer');
-const { createWritable, writeToFile } = require('./library');
+const { createWritable, writeToFile, deleteFile } = require('./library');
+const { uploadToElasticSearch } = require('../database/upload');
 
-const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fileType, configuration }) => {
+const initializeScrape = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
   console.log('scraping...');
   const writable = createWritable(fileName, fileType);
   const browser = await puppeteer.launch();
@@ -28,7 +30,7 @@ const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fil
       return scrapedContent;
     }, listSelector, configuration);
 
-    writeToFile(writable, pageResults);
+    writeToFile(writable, pageResults, fileName, itemDescriptor);
     await Promise.all([
       page.waitForNavigation(),
       page.click(nextSelector)
@@ -50,11 +52,14 @@ const initializeScrape = async ({ url, nextSelector, listSelector, fileName, fil
 
     return scrapedContent;
   }, listSelector, configuration);
-  writeToFile(writable, lastPageResults);
+  writeToFile(writable, lastPageResults, fileName, itemDescriptor);
 
   browser.close();
   writable.end();
-  console.log('...scraping complete');
+
+  console.log('Scraping complete. Loading into ElasticSearch');
+
+  uploadToElasticSearch(fileName);
 };
 
 module.exports = {

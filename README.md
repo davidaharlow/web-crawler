@@ -7,52 +7,70 @@ Extract and index relevant information from a specified website
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Requirements
+
+The only requirement of this application is the Node Package Manager. All other dependencies can be installed with:
 
 ```
-git clone https://github.com/your-username/web-crawler.git
-cd web-crawler/
 npm install
 ```
 
-Fork this repository to your github account and clone down the repo.
-Install the repository's dependencies.
+### Basic Configuration
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+You will have to create your own Amazon Elasticsearch Service endpoint or use the one provided to you. Your ENDPOINT environment variable must be set before the sample code is able to connect to AWS. You can do this by running this command in the terminal:
 
 ```
-Give the example
+export ENDPOINT=https://search-domainname-domainid.us-west-1.es.amazonaws.com
 ```
 
-And repeat
+Ensure that you have set the environment variable correctly:
 
 ```
-until finished
+echo $ENDPOINT
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+The console should print out the URL you just entered. 
 
-## Run Test Suite
+### Running the IMDB Sample
+
+Run the code in your browser using the command: 
+
+```
+npm start
+```
+
+Enter these parameters into the input fields:
+
+```
+  url: 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating&view=advanced'
+  nextSelector: '.lister-page-next'
+  listSelector: '.lister-item-content'
+  fileName: 'imdb'
+  itemDescriptor: 'movie'
+  fileType: 'json'
+
+  title: 'div.lister-item-content > h3 > a'
+  description: 'div.lister-item-content > p:nth-child(4)'
+  director: 'div.lister-item-content > p:nth-child(5) > a:nth-child(1)'
+```
+
+Click the crawl button.
+
+The web-crawler will connect to Amazon's Elastic Search Service (ES), and index the information scraped from the Highest Rated IMDB "Top 1000" Titles list. The script will automatically create and upload the file to AWS. 
+
+All you need to do is search it:
+
+Enter a query into the search bar.
+
+## Testing
 
 ```
 npm test
 ```
 
-### End to End Testing
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Work in Progress.
 
 ## Built With
 
@@ -61,6 +79,7 @@ Add additional notes about how to deploy this on a live system
 * [React](https://reactjs.org/) - User Interface Library
 * [Travis](https://travis-ci.org/) - Continuous Integration
 * [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
+* [Amazon ES](https://aws.amazon.com/elasticsearch-service/) - Fully Managed ElasticSearch Service
 
 ## Contributing
 
