@@ -10,7 +10,7 @@ router.post('/web-crawler', async (req, res) => {
   try {
     let { params } = req.body;
     await initializeScrape(params);
-    res.send({ message: `${params.fileName} now searchable!` });
+    res.send({ searchable: true });
   } catch (error) {
     res.send(error);
   }
