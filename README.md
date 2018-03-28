@@ -7,52 +7,53 @@ Extract and index relevant information from a specified website
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Requirements
+
+The only requirement of this application is the Node Package Manager. All other dependencies (including the AWS SDK for Node.js) can be installed with:
 
 ```
-git clone https://github.com/your-username/web-crawler.git
-cd web-crawler/
 npm install
 ```
 
-Fork this repository to your github account and clone down the repo.
-Install the repository's dependencies.
+### Basic Configuration
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+You need to set up your AWS security credentials before the sample code is able to connect to AWS. You can do this by creating a file named "credentials" at ~/.aws/ (C:\Users\USER_NAME.aws\ for Windows users) and saving the following lines in the file:
 
 ```
-Give the example
+[default]
+aws_access_key_id = <your access key id>
+aws_secret_access_key = <your secret key>
 ```
 
-And repeat
+### Running the IMDB Sample
+
+This sample web-crawler connects to Amazon's Elastic Search Service (ES), and indexes the information scraped from the Highest Rated IMDb "Top 1000" Titles list. The script will automatically create the file to upload. All you need to do is run it:
 
 ```
-until finished
+node web-crawler/web-crawler.js
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Then, bulk upload the documents to an Amazon ES Domain by typing the command:
 
-## Run Test Suite
+```
+curl -XPOST elasticsearch_domain_endpoint/_bulk --data-binary @imdb.json -H 'Content-Type: application/json'
+```
+
+Run the following command to search the IMDB domain for the word "spielberg"
+
+```
+curl -XGET 'elasticsearch_domain_endpoint/imdb/_search?q=spielberg'
+```
+
+## Testing
 
 ```
 npm test
 ```
 
-### End to End Testing
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Work in Progress.
 
 ## Built With
 
@@ -61,6 +62,7 @@ Add additional notes about how to deploy this on a live system
 * [React](https://reactjs.org/) - User Interface Library
 * [Travis](https://travis-ci.org/) - Continuous Integration
 * [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
+* [Amazon ES](https://aws.amazon.com/elasticsearch-service/) - Fully Managed ElasticSearch Service
 
 ## Contributing
 
