@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const { createWritable, writePageResults } = require('./library');
 
 const scrapeSite = async (params) => {
+  console.log('scraping...');
   let {
     url,
     nextSelector,
@@ -58,6 +59,7 @@ const scrapeSite = async (params) => {
 
   browser.close();
   writable.end();
+  console.log('scrape complete...');
 };
 
 module.exports = {
