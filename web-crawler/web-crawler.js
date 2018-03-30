@@ -1,9 +1,8 @@
 /* eslint-disable */
 const puppeteer = require('puppeteer');
-const { createWritable, writeToFile, deleteFile } = require('./library');
-const { uploadToElasticSearch } = require('../database/upload');
+const { createWritable, writePageResults } = require('./library');
 
-const initializeScrape = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
+const scrapeSite = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
   console.log('scraping...');
   const writable = createWritable(fileName, fileType);
   const browser = await puppeteer.launch();
@@ -32,25 +31,27 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
     return pageResults;
   };
 
-  while (await page.$(nextSelector)) {
-    const pageResults = await getPageResults();
-    writeToFile(writable, pageResults, fileName, itemDescriptor);
-    await Promise.all([
-      page.waitForNavigation(),
-      page.click(nextSelector)
-    ]);
-  }
+  const writeAllPageResults = async () => {
+    while (await page.$(nextSelector)) {
+      const pageResults = await getPageResults();
+      writePageResults(writable, pageResults, fileName, itemDescriptor);
+      await Promise.all([
+        page.waitForNavigation(),
+        page.click(nextSelector)
+      ]);
+    }
 
-  const lastPageResults = await getPageResults();
-  writeToFile(writable, lastPageResults, fileName, itemDescriptor);
+    const lastPageResults = await getPageResults();
+    writePageResults(writable, lastPageResults, fileName, itemDescriptor);
+  };
+
+  await writeAllPageResults();
 
   browser.close();
   writable.end();
-
-  console.log('Scraping complete. Loading into ElasticSearch');
-  uploadToElasticSearch(fileName);
+  console.log('Scraping complete.');
 };
 
 module.exports = {
-  initializeScrape,
+  scrapeSite,
 };
