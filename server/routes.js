@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { initializeScrape } = require('../web-crawler/web-crawler');
+const { scrapeSite } = require('../web-crawler/web-crawler');
 const { search } = require('../database/query');
+const { uploadToElasticSearch } = require('../database/upload');
 
 router.get('/', (req, res) => {
   res.sendStatus(201);
@@ -9,8 +10,12 @@ router.get('/', (req, res) => {
 router.post('/web-crawler', async (req, res) => {
   try {
     let { params } = req.body;
-    await initializeScrape(params);
-    res.send({ searchable: true });
+    let { fileName } = params;
+
+    await scrapeSite(params);
+    uploadToElasticSearch(fileName);
+
+    res.send({ loading: true });
   } catch (error) {
     res.send(error);
   }
