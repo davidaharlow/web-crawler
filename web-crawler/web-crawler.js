@@ -2,8 +2,17 @@
 const puppeteer = require('puppeteer');
 const { createWritable, writePageResults } = require('./library');
 
-const scrapeSite = async ({ url, nextSelector, listSelector, itemDescriptor, fileName, fileType, configuration }) => {
-  console.log('scraping...');
+const scrapeSite = async (params) => {
+  let {
+    url,
+    nextSelector,
+    listSelector,
+    itemDescriptor,
+    fileName,
+    fileType,
+    configuration,
+  } = params;
+
   const writable = createWritable(fileName, fileType);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -14,13 +23,13 @@ const scrapeSite = async ({ url, nextSelector, listSelector, itemDescriptor, fil
 
   const getPageResults = async () => {
     const pageResults = await page.evaluate((listSelector, configuration) => {
-      let scrapedContent = [];
-      let listElements = document.querySelectorAll(listSelector);
+      const scrapedContent = [];
+      const listElements = document.querySelectorAll(listSelector);
 
       listElements.forEach((element) => {
-        let item = {};
+        const item = {};
         for (let desiredAttribute in configuration) {
-          let attributeSelector = configuration[desiredAttribute];
+          const attributeSelector = configuration[desiredAttribute];
           item[desiredAttribute] = element.querySelector(attributeSelector).innerText;
         }
         scrapedContent.push(JSON.stringify(item));
@@ -49,7 +58,6 @@ const scrapeSite = async ({ url, nextSelector, listSelector, itemDescriptor, fil
 
   browser.close();
   writable.end();
-  console.log('Scraping complete.');
 };
 
 module.exports = {
