@@ -13,12 +13,12 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
 
   page.on('console', msg => console.log(msg.text()));
 
-  while (await page.$(nextSelector)) {
+  const getPageResults = async () => {
     const pageResults = await page.evaluate((listSelector, configuration) => {
       let scrapedContent = [];
-      let elements = document.querySelectorAll(listSelector);
+      let listElements = document.querySelectorAll(listSelector);
 
-      elements.forEach((element) => {
+      listElements.forEach((element) => {
         let item = {};
         for (let desiredAttribute in configuration) {
           let attributeSelector = configuration[desiredAttribute];
@@ -29,7 +29,11 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
 
       return scrapedContent;
     }, listSelector, configuration);
+    return pageResults;
+  };
 
+  while (await page.$(nextSelector)) {
+    const pageResults = await getPageResults();
     writeToFile(writable, pageResults, fileName, itemDescriptor);
     await Promise.all([
       page.waitForNavigation(),
@@ -37,28 +41,13 @@ const initializeScrape = async ({ url, nextSelector, listSelector, itemDescripto
     ]);
   }
 
-  const lastPageResults = await page.evaluate((listSelector, configuration) => {
-    let scrapedContent = [];
-    let elements = document.querySelectorAll(listSelector);
-
-    elements.forEach((element) => {
-      let item = {};
-      for (let desiredAttribute in configuration) {
-        let attributeSelector = configuration[desiredAttribute];
-        item[desiredAttribute] = element.querySelector(attributeSelector).innerText;
-      }
-      scrapedContent.push(JSON.stringify(item));
-    });
-
-    return scrapedContent;
-  }, listSelector, configuration);
+  const lastPageResults = await getPageResults();
   writeToFile(writable, lastPageResults, fileName, itemDescriptor);
 
   browser.close();
   writable.end();
 
   console.log('Scraping complete. Loading into ElasticSearch');
-
   uploadToElasticSearch(fileName);
 };
 
