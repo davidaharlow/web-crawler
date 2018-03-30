@@ -4,7 +4,7 @@ const createWritable = (fileName, fileType) => fs.createWriteStream(`${fileName}
 
 let count = 0;
 
-const writeToFile = (writable, pageResults, fileName, itemDescriptor) => {
+const writePageResults = (writable, pageResults, fileName, itemDescriptor) => {
   pageResults.forEach((result) => {
     let index = {
       index: {
@@ -21,5 +21,5 @@ const writeToFile = (writable, pageResults, fileName, itemDescriptor) => {
 
 module.exports = {
   createWritable,
-  writeToFile,
+  writePageResults,
 };
