@@ -12,9 +12,9 @@
 2. [Second Step]
 3. [and so on...]
 
-**Expected behavior:** [What you expect to happen]
+**Expected behavior:** [What you expect to happen?]
 
-**Actual behavior:** [What actually happens]
+**Actual behavior:** [What actually happens?]
 
 **Reproduces how often:** [What percentage of the time does it reproduce?]
 
@@ -24,4 +24,4 @@ Please include the version of Web-Crawler you are using, which OS you are runnin
 
 ### Additional Information
 
-Any additional information, configuration or data that might be necessary to reproduce the issue.
+Any additional information, configuration, or data that might be necessary to reproduce the issue.
