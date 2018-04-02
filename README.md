@@ -60,6 +60,7 @@ Work in Progress.
 ## Built With
 
 * [Amazon ES](https://aws.amazon.com/elasticsearch-service/) - Fully Managed ElasticSearch Service
+* [Jest](https://facebook.github.io/jest/) - JavaScript Testing
 * [Node](https://nodejs.org/en/) - Runtime Environment
 * [NPM](https://www.npmjs.com/) - Package Manager
 * [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
