@@ -17,7 +17,13 @@ npm install
 
 ### Basic Configuration
 
-You will have to create your own Amazon Elasticsearch Service endpoint or use the one provided to you. Your ENDPOINT environment variable must be set before the sample code is able to connect to AWS. You can do this by running this command in the terminal:
+This app uses Webpack which takes modules with dependencies and generates static assets representing those modules. In order for your app to render you will need to first bundle your modules using the following command:
+
+```
+npm run build
+```
+
+You will also have to create an Amazon Elasticsearch Service endpoint. Your ENDPOINT environment variable must be set before the sample code is able to connect to AWS. You can do this by running this command in the terminal:
 
 ```
 export ENDPOINT=https://search-domainname-domainid.us-west-1.es.amazonaws.com
@@ -31,29 +37,15 @@ echo $ENDPOINT
 
 The console should print out the URL you just entered. 
 
-### Running the IMDB Sample
+### Running the App
 
 Initalize your server:
-
-```
-node server/index.js
-```
-
-ElasticSearch Info should output that it is adding a connection to the Amazon ES Endpoint. If it is attempting to add to localhost, see the Basic Configuration notes above.
-
-Run the code in your browser using the following command: 
 
 ```
 npm start
 ```
 
-Click the crawl button.
-
-The web-crawler will connect to Amazon's Elastic Search Service (ES), and index the information scraped from the Highest Rated IMDB "Top 1000" Titles list. The script will automatically create and upload the file to AWS. 
-
-It should take less than a minute to scrape the data and upload it to Amazon. All you need to do is search it:
-
-Enter a query into the search bar when it appears.
+ElasticSearch Info should output that it is adding a connection to the Amazon ES Endpoint. If it is attempting to add to localhost, see the Basic Configuration notes above.
 
 ## Testing
 
@@ -67,12 +59,13 @@ Work in Progress.
 
 ## Built With
 
+* [Amazon ES](https://aws.amazon.com/elasticsearch-service/) - Fully Managed ElasticSearch Service
 * [Node](https://nodejs.org/en/) - Runtime Environment
 * [NPM](https://www.npmjs.com/) - Package Manager
+* [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
 * [React](https://reactjs.org/) - User Interface Library
 * [Travis](https://travis-ci.org/) - Continuous Integration
-* [Puppeteer](https://developers.google.com/web/tools/puppeteer/) - High Level API to Control Headless Chrome
-* [Amazon ES](https://aws.amazon.com/elasticsearch-service/) - Fully Managed ElasticSearch Service
+* [Webpack](https://webpack.js.org/) - Module Bundler
 
 ## Contributing
 
@@ -92,10 +85,5 @@ See also the list of [contributors](https://github.com/brycessorensen/web-crawle
 
 This is free and unencumbered software released into the public domain - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments and Useful Sites
+## Acknowledgments
 
-* Bootstrapping a React app [Create React App](https://github.com/facebook/create-react-app)
-* ISSUE_TEMPLATE.md [Template](https://github.com/atom/atom/blob/master/ISSUE_TEMPLATE.md)
-* CONTRIBUTING.md [Template](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#reporting-bugs)
-* README.md [Template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* PULL_REQUEST_TEMPLATE.md [Template](https://github.com/atom/atom/edit/master/PULL_REQUEST_TEMPLATE.md)
