@@ -6,8 +6,13 @@
 # testing
 /coverage
 
-# production
-/build
+# ignore build files
+/client/build/bundle.js
+/client/build/assets
+/client/build/*.png
+
+# add an exception (using !) to the preceding rule to track a specific file
+!/client/build/index.html
 
 # misc
 .DS_Store
