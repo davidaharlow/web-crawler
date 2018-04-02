@@ -3,31 +3,27 @@ const { scrapeSite } = require('../web-crawler/web-crawler');
 const { search } = require('../database/query');
 const { uploadToElasticSearch } = require('../database/upload');
 
-router.get('/', (req, res) => {
-  res.sendStatus(201);
-});
-
 router.post('/web-crawler', async (req, res) => {
   try {
-    let { params } = req.body;
+    let { body: params } = req;
     let { fileName } = params;
 
     await scrapeSite(params);
-    uploadToElasticSearch(fileName);
+    await uploadToElasticSearch(fileName);
 
-    res.send({ loading: true });
+    res.sendStatus(201);
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 });
 
-router.get('/search', async (req, res) => {
-  let { query: { query } } = req;
+router.get('/search:query', async (req, res) => {
+  let { params: { query } } = req;
   try {
     let results = await search(query);
     res.send(results);
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 });
 

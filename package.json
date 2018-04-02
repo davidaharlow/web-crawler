@@ -1,29 +1,65 @@
 {
   "name": "web-crawler",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "proxy": "http://localhost:4000/",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "^1.18.2",
-    "elasticsearch": "^14.2.1",
-    "express": "^4.16.3",
-    "puppeteer": "^1.2.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
-  },
+  "description": "Index the web",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node server/index.js",
+    "build": "webpack -d --watch --mode development",
+    "build:pro": "webpack --mode production",
+    "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brycessorensen/web-crawler.git"
+  },
+  "author": "Bryce S. Sorensen",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/brycessorensen/web-crawler/issues"
+  },
+  "homepage": "https://github.com/brycessorensen/web-crawler#readme",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.42",
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/preset-react": "^7.0.0-beta.42",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^22.4.3",
+    "babel-loader": "^8.0.0-beta.2",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "nodemon": "^1.17.2"
+    "file-loader": "^1.1.11",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^22.4.3",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
+    "nodemon": "^1.17.2",
+    "regenerator-runtime": "^0.11.1",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0-beta.42",
+    "body-parser": "^1.18.2",
+    "elasticsearch": "^14.2.1",
+    "express": "^4.16.3",
+    "prop-types": "^15.6.1",
+    "puppeteer": "^1.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "semantic-ui-less": "^2.3.1",
+    "semantic-ui-react": "^0.79.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
   }
 }

@@ -7,6 +7,6 @@ const server = express();
 const PORT = process.env.PORT || 4000;
 
 server.use(bodyParser.json());
-server.use(express.static(path.join(__dirname, '/public')));
+server.use(express.static(path.join(__dirname, '../client/build')));
 server.use(router);
-server.listen(PORT, () => console.log(`server is listening on port ${PORT}...`));
+server.listen(PORT, () => console.log(`App is now live at http://localhost:${PORT}`));
