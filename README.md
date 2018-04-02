@@ -1,5 +1,6 @@
 # web-crawler
-[![Build Status](https://travis-ci.org/brycessorensen/web-crawler.svg?branch=master)](https://travis-ci.org/brycessorensen/web-crawler)
+[![Build Status](https://travis-ci.org/brycessorensen/web-crawler.svg?branch=master)](https://travis-ci.org/brycessorensen/web-crawler) [![NSP Status](https://nodesecurity.io/orgs/web-crawler/projects/83fb104e-43d6-4e7d-afe1-d6137e6c9604/badge)](https://nodesecurity.io/orgs/web-crawler/projects/83fb104e-43d6-4e7d-afe1-d6137e6c9604)
+
 
 Extract and index relevant information from a specified website
 
